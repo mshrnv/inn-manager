@@ -3,10 +3,13 @@ const axios = require("axios");
 
 class CompanyService {
     async getCompanyByInn(inn) {
+        // Search in database
         let company = await Company.findOne({where: {inn}})
 
         if (!company) {
+            // Fetching from external API
             const fetchedCompany = await this.fetchCompany(inn)
+            // Saving in database
             company = await Company.create(fetchedCompany)
         }
 
@@ -14,6 +17,7 @@ class CompanyService {
     }
 
     async fetchCompany(inn) {
+        // POST query to external API
         const {data} = await axios.post(process.env.API_URL, {query: inn}, {
             headers: {
                 "Content-Type": "application/json",
@@ -24,6 +28,7 @@ class CompanyService {
 
         let fetchedCompany = data['suggestions'][0]
 
+        // Checks for empty response
         if (!fetchedCompany) {
             throw new Error("Некорректный ИНН")
         }
