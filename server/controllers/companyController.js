@@ -7,8 +7,7 @@ class CompanyController {
             res.json(company)
         } catch (e) {
             res.status(500).json({
-                message: "Ошибка получения информации",
-                error: e
+                message: e.message
             })
         }
     }
