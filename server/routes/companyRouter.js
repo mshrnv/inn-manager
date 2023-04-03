@@ -1,8 +1,7 @@
 const Router = require('express')
 const router = Router()
+const companyController = require('../controllers/companyController')
 
-router.get('/', (req, res) => {
-    res.status(200).json({message: 'worked'})
-})
+router.get('/', companyController.getByInn)
 
 module.exports = router
